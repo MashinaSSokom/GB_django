@@ -2,8 +2,12 @@ from django.shortcuts import render
 
 
 def main(request):
-    return render(request, 'index.html')
+    context = {'title': 'Главная'}
+
+    return render(request, 'index.html', context=context)
 
 
-def contact(request):
-    return render(request, 'contact.html')
+def contacts(request):
+    context = {'title': 'Контакты'}
+
+    return render(request, 'contacts.html', context=context)
