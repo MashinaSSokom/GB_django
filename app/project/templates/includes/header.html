@@ -1,9 +1,15 @@
 <div class="header clearfix">
     <a href="/" class="logo"></a>
     <ul class="menu">
-        <li><a href="/" class="active">домой</a></li>
-        <li><a href="/products">продукты</a></li>
-        <li><a href="/contact/">контакты</a></li>
+        <li>
+            <a href="/" class="{% if request.path == '/'  %} active {% endif %}">домой</a>
+        </li>
+        <li>
+            <a href="/products/" class="{% if request.path == '/products/'  %} active {% endif %}">продукты</a>
+        </li>
+        <li>
+            <a href="/contacts/" class="{% if request.path == '/contacts/'  %} active {% endif %}">контакты</a>
+        </li>
     </ul>
     <a href="#" class="search"></a>
 </div>
