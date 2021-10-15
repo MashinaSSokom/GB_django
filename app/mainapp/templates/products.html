@@ -70,7 +70,7 @@
                 {% for product in related_products %}
                 <div class="block">
                     <a href="#">
-                        <img src="{% static product.img %}" alt="">
+                        <img class="block__img" src="/media/{{ product.image }}" alt="">
                         <div class="text">
                             <img src="{% static 'mainapp/img/icon-hover.png' %}" alt="img">
                             <h4>{{ product.name }}</h4>
