@@ -1,8 +1,15 @@
 from django.shortcuts import render
 
+from mainapp import models
+
 
 def main(request):
-    context = {'title': 'Главная'}
+    products = models.Product.objects.all()[:4]
+
+    context = {
+        'title': 'Главная',
+        'products': products,
+    }
 
     return render(request, 'index.html', context=context)
 
