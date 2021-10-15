@@ -899,6 +899,10 @@ td:first-child {
 	margin-top: 98px;
 	height: 651px;
 }
+.slider-product__img {
+	width: 70px;
+	height: 70px;
+}
 .details-slider {
 	width: 570px;
 	float: left;
