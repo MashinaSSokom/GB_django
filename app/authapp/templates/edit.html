@@ -1,0 +1,10 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+
+{% block content %}
+            <form class="form-horizontal" action="{% url 'auth:edit' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ edit_form.as_p }}
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+{% endblock %}

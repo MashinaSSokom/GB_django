@@ -2,11 +2,10 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 
-from authapp.forms import ShopUserLoginForm
+from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
 
 
 def login(request):
-
     title = "Вход"
     login_form = ShopUserLoginForm(data=request.POST)
 
@@ -33,8 +32,43 @@ def logout(request):
 
 
 def edit(request):
-    pass
+    title = "Редактирование"
+
+    if request.method == 'POST':
+
+        edit_form = ShopUserEditForm(data=request.POST,
+                                     files=request.FILES,
+                                     instance=request.user)
+        if edit_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('main'))
+    else:
+        edit_form = ShopUserEditForm(instance=request.user)
+
+    context = {
+        'title': title,
+        'edit_form': edit_form,
+    }
+    return render(request, 'edit.html', context)
 
 
 def register(request):
-    pass
+    title = "Регистрация"
+
+    if request.method == 'POST':
+
+        register_form = ShopUserRegisterForm(data=request.POST,
+                                             files=request.FILES)
+        if register_form.is_valid():
+            register_form.save()
+            return HttpResponseRedirect(reverse('auth:login'))
+    else:
+
+        register_form = ShopUserRegisterForm()
+
+    context = {
+        'title': title,
+        'register_form': register_form,
+    }
+
+    return render(request, 'register.html', context)
