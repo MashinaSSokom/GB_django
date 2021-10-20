@@ -3,6 +3,9 @@ from django.core.management.base import BaseCommand
 import json
 import os
 
+from django.db import IntegrityError
+
+from authapp.models import ShopUser
 from mainapp.models import ProductCategory, Product
 
 JSON_PATH = 'mainapp/jsons/'
@@ -33,4 +36,7 @@ class Command(BaseCommand):
             new_product = Product(**product)
             new_product.save()
 
-        super_user = User.objects.create_superuser('admin', 'admin@admin.com', '123')
+        try:
+            super_user = ShopUser.objects.create_superuser('admin', 'admin@admin.com', '123', age=25)
+        except IntegrityError as e:
+            print('Superuser already exists')
