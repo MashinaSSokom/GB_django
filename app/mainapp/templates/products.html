@@ -6,57 +6,23 @@
         {% include 'includes/header.html' %}
     </div>
 
-    <div class="details">
-        <div class="links clearfix">
-            <ul class="links-menu">
-                {% for link in links_menu %}
-                    <li>
-                        <a href="{{ link.href }}" class="{% if request.resolver_match.url_name == link.href %} active {% endif %}">
-                        {{ link.name }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+    {% include 'includes/links_menu.html' %}
+
+
+    <div class="related">
+        <div class="title clearfix">
+            {% if category %}
+                <h2>Категория {{ category.name }}</h2>
+            {% else %}
+                <h2>Все продукты</h2>
+
+            {% endif %}
+            {#                <a class="explore" href="#">показать все <img src="{% static 'mainapp/img/arrow.png' %}" alt=""></a>#}
         </div>
-
-        <div class="details-products">
-            <div class="details-slider">
-                <div class="slider-product">
-                    <img src= "/media/{{ related_products.1.image }}">
-                </div>
-                <div class="slider-control">
-                    {% for i in "123" %}
-                    <div class="block">
-                        <a href="#"><img class="slider-product__img" src="/media/{{ related_products.1.image }}" alt="">
-                            <div class="text"></div>
-                        </a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="description">
-                <h3 class="big-bold">{{ related_products.1.name }}</h3>
-                <h3 class="red">{{ related_products.1.short_description }}</h3>
-                <p class="price"> {{ related_products.1.price }} <span>руб</span></p>
-                <a href="#" class="red-button">
-                    заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </a>
-                <div class="description-text">
-                    <p>{{ related_products.1.description }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="related">
-            <div class="title clearfix">
-                <h2>Похожие продукты</h2>
-                <a class="explore" href="#">показать все <img src="{% static 'mainapp/img/arrow.png' %}" alt=""></a>
-            </div>
-            <div class="related-products clearfix">
-                {% for product in related_products %}
+        <div class="related-products clearfix">
+            {% for product in products %}
                 <div class="block">
-                    <a href="#">
+                    <a href="{% url 'products:detail_product' product.category.id product.id %}">
                         <img class="block__img" src="/media/{{ product.image }}" alt="">
                         <div class="text">
                             <img src="{% static 'mainapp/img/icon-hover.png' %}" alt="img">
@@ -65,8 +31,7 @@
                         </div>
                     </a>
                 </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
     </div>
 

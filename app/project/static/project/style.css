@@ -551,7 +551,7 @@ html, body {
 	background-color: #f7f7f7;
 	padding-left: 99px;
 	padding-right: 98px;
-	margin: -384px auto 0;
+	margin: -250px auto 0;
 	clear: both;
 }
 .footer form {
@@ -902,6 +902,10 @@ td:first-child {
 .slider-product__img {
 	width: 70px;
 	height: 70px;
+}
+.details__img{
+	width: 570px;
+	height: 570px;
 }
 .details-slider {
 	width: 570px;

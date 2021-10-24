@@ -5,12 +5,16 @@
             <a href="{% url 'main' %}" class="{% if request.path == '/' %} active {% endif %}">домой</a>
         </li>
         <li>
-            <a href="{% url 'products:products' %}" class="{% if request.path == '/products/' %} active {% endif %}">каталог</a>
+            <a href="{% url 'products:products' %}" class="{% if '/products/' in request.path %} active {% endif %}">каталог</a>
         </li>
         <li>
-            <a href="{% url 'contacts' %}" class="{% if request.path == '/contacts/' %} active {% endif %}">контакты</a>
+            <a href="{% url 'contacts' %}" class="{% if '/contacts/' in request.path %} active {% endif %}">контакты</a>
         </li>
         {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'basket:basket' %}" class="{% if '/basket/' in request.path %} active {% endif %}">
+                    Корзина </a>
+            </li>
             <li>
                 <a href="{% url 'auth:edit' %}"> {{ user.first_name|default:'Пользователь' }}</a>
             </li>
@@ -18,10 +22,20 @@
                 <a href="{% url 'auth:logout' %}"> выйти </a>
             </li>
         {% else %}
-             <li>
+            <li>
                 <a href="{% url 'auth:login' %}"> войти </a>
             </li>
         {% endif %}
+        <li>
+            <div>
+                <a href="#" class="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </a>
+            </div>
+        </li>
     </ul>
-    <a href="#" class="search"></a>
+
 </div>
