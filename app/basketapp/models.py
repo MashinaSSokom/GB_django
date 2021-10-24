@@ -33,3 +33,6 @@ class Basket(models.Model):
     def __str__(self):
         return f'{self.product} {self.quantity_in_basket} шт.'
 
+    def get_full_product_price(self):
+
+        return self.quantity_in_basket*self.product.price
