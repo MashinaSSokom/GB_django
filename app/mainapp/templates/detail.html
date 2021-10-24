@@ -11,13 +11,12 @@
         <div class="details-products">
             <div class="details-slider">
                 <div class="slider-product">
-                    <img src="/media/{{ detail_product.image }}">
+                    <img src="/media/{{ detail_product.image }}" class="details__img" alt="">
                 </div>
                 <div class="slider-control">
                     {% for i in "123" %}
                         <div class="block">
-                            <a href="#"><img class="slider-product__img" src="/media/{{ detail_product.image }}"
-                                             alt="">
+                            <a href="#"><img class="slider-product__img" src="/media/{{ detail_product.image }}" alt="">
                                 <div class="text"></div>
                             </a>
                         </div>
@@ -61,6 +60,5 @@
             </div>
         </div>
     {% endif %}
-
 
 {% endblock %}

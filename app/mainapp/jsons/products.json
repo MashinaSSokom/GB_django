@@ -25,5 +25,14 @@
     "short_description": "Стул в стиле модерн",
     "price": "999.00",
     "quantity": 45
+  },
+  {
+    "category": "Дом",
+    "name": "Лампа \"Маяк\"",
+    "image": "products_images/product-41.jpg",
+    "description": "Удобная Лампа",
+    "short_description": "Удобная лампа Удобная лампа Удобная лампа",
+    "price": "1999.00",
+    "quantity": 15
   }
 ]
