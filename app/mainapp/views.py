@@ -18,6 +18,7 @@ def products(request):
     #     data = json.load(f)
     #     for v in data.values():
     #         related_products.append(v)
+    print(links_menu.values())
 
     context = {'title': 'Каталог',
                'links_menu': links_menu,
