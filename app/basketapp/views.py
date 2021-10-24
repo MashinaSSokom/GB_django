@@ -14,7 +14,8 @@ def basket_view(request):
         full_price += item.get_full_product_price()
         all_quantity += item.quantity_in_basket
 
-    context = {'products_in_basket': products_in_basket,
+    context = {'title': 'Корзина',
+               'products_in_basket': products_in_basket,
                'full_price': full_price,
                'all_quantity': all_quantity}
 
@@ -22,7 +23,6 @@ def basket_view(request):
 
 
 def basket_add_view(request, pk):
-
     product = get_object_or_404(Product, pk=pk)
 
     basket = models.Basket.objects.filter(user=request.user, product=product).first()
@@ -35,8 +35,8 @@ def basket_add_view(request, pk):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def basket_remove_view(request, pk):
 
+def basket_remove_view(request, pk):
     # basket = models.Basket.objects.filter(product=product).first()
     #
     # if not basket:
@@ -46,4 +46,3 @@ def basket_remove_view(request, pk):
     # basket.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
