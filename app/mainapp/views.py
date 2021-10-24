@@ -4,6 +4,10 @@ import json
 from . import models
 
 
+def product(request, pk):
+    print(pk)
+
+
 def products(request):
     links_menu = models.ProductCategory.objects.all()
 
