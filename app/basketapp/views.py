@@ -6,18 +6,10 @@ from . import models
 
 
 def basket_view(request):
-    products_in_basket = models.Basket.objects.filter(user=request.user)
-
-    all_quantity = 0
-    full_price = 0
-    for item in products_in_basket:
-        full_price += item.get_full_product_price()
-        all_quantity += item.quantity_in_basket
+    basket = models.Basket.objects.filter(user=request.user)
 
     context = {'title': 'Корзина',
-               'products_in_basket': products_in_basket,
-               'full_price': full_price,
-               'all_quantity': all_quantity}
+               'basket': basket}
 
     return render(request, 'basket.html', context)
 
