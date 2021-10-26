@@ -28,13 +28,21 @@ def basket_add_view(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+def basket_sub_view(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    basket = models.Basket.objects.filter(user=request.user, product=product).first()
+
+    if basket.quantity_in_basket > 1:
+        basket.quantity_in_basket -= 1
+        basket.save()
+    else:
+        basket.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def basket_remove_view(request, pk):
-    # basket = models.Basket.objects.filter(product=product).first()
-    #
-    # if not basket:
-    #     models.Basket.objects.create(product=product)
-    #
-    # basket.quantity_in_basket += 1
-    # basket.save()
+    basket = get_object_or_404(models.Basket, pk=pk)
+    basket.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
