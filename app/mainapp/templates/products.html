@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <div class="hero-white">
+    <div class="hero-white container">
         {% include 'includes/header.html' %}
     </div>
 
     {% include 'includes/links_menu.html' %}
 
 
-    <div class="related">
+    <div class="related container">
         <div class="title clearfix">
             {% if category %}
                 <h2>Категория {{ category.name }}</h2>

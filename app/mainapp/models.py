@@ -8,6 +8,9 @@ class ProductCategory(models.Model):
         verbose_name='Название',
         max_length=128
     )
+    is_active = models.BooleanField(
+        verbose_name='Активный', default=True
+    )
     created = models.DateField(
         auto_now_add=True
     )
@@ -57,6 +60,9 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(
         verbose_name='Количество на складе',
         default=0
+    )
+    is_active = models.BooleanField(
+        verbose_name='Активный', default=True
     )
     created = models.DateField(
         auto_now_add=True
