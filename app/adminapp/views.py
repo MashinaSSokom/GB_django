@@ -1,5 +1,8 @@
+from django.http import HttpResponseRedirect
+
+from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, reverse
 from mainapp.models import Product, ProductCategory
 from django.contrib.auth.decorators import user_passes_test
 
@@ -19,7 +22,23 @@ def users(request):
 
 
 def user_create(request):
-    pass
+    title = 'админка/создать пользователя'
+
+    if request.method == "POST":
+        user_form = ShopUserRegisterForm(data=request.POST,
+                                         files=request.FILES)
+        if user_form.is_valid():
+            user_form.save()
+            return HttpResponseRedirect(reverse('admin_staff:users'))
+
+    user_form = ShopUserRegisterForm()
+
+    context = {
+        'title': title,
+        'user_form': user_form
+    }
+
+    return render(request, 'user_update.html', context)
 
 
 def user_update(request, pk):
