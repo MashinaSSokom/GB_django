@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 
-from adminapp.forms import ShopUserAdminEditForm
+from adminapp.forms import ShopUserAdminEditForm, ProductCategoryCreateFrom
 from authapp.forms import ShopUserRegisterForm, ShopUserEditForm
 from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render, reverse
@@ -71,6 +71,7 @@ def user_delete(request, pk):
 
     return HttpResponseRedirect(reverse('admin_staff:users'))
 
+
 @user_passes_test(lambda u: u.is_superuser)
 def categories(request):
     title = 'админка/категории'
@@ -86,7 +87,21 @@ def categories(request):
 
 
 def category_create(request):
-    pass
+    title = 'админка/создать категорию'
+
+    if request.method == "POST":
+        category_form = ProductCategoryCreateFrom(data=request.POST)
+        if category_form.is_valid():
+            category_form.save()
+            return HttpResponseRedirect(reverse('admin_staff:categories'))
+
+    category_form = ProductCategoryCreateFrom()
+
+    context = {
+        'title': title,
+        'category_form': category_form
+    }
+    return render(request, 'category_update.html', context)
 
 
 def category_update(request, pk):
