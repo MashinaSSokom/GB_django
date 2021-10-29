@@ -18,6 +18,9 @@ class Basket(models.Model):
     quantity_in_basket = models.PositiveIntegerField(
         default=0
     )
+    is_active = models.BooleanField(
+        verbose_name='Активный', default=True
+    )
     created = models.DateField(
         auto_now_add=True
     )
