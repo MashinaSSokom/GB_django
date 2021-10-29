@@ -4,13 +4,13 @@ import json
 from . import models
 
 
-def detail_product_view(request, catid, productid):
+def detail_product_view(request, productid):
 
-    detail_product = models.Product.objects.filter(category_id=catid).filter(id=productid)[0]
+    detail_product = models.Product.objects.filter(id=productid)[0]
 
     links_menu = models.ProductCategory.objects.all()
-    category = get_object_or_404(models.ProductCategory, id=catid)
-    related_products = models.Product.objects.filter(category_id=catid).exclude(id=productid)
+    category = get_object_or_404(models.ProductCategory, name=detail_product.category.name)
+    related_products = models.Product.objects.filter(category_id=category.id).exclude(id=productid)
 
     context = {'title': 'Каталог',
                'detail_product': detail_product,
