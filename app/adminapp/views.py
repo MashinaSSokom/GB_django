@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 
-from authapp.forms import ShopUserRegisterForm
+from adminapp.forms import ShopUserAdminEditForm
+from authapp.forms import ShopUserRegisterForm, ShopUserEditForm
 from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render, reverse
 from mainapp.models import Product, ProductCategory
@@ -37,12 +38,28 @@ def user_create(request):
         'title': title,
         'user_form': user_form
     }
-
     return render(request, 'user_update.html', context)
 
 
 def user_update(request, pk):
-    pass
+    title = 'админка/редактирова пользователя'
+    user = get_object_or_404(ShopUser, pk=pk)
+
+    if request.method == "POST":
+        edit_form = ShopUserAdminEditForm(data=request.POST,
+                                          files=request.FILES,
+                                          instance=user)
+        if edit_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('admin_staff:users'))
+
+    edit_form = ShopUserAdminEditForm(instance=user)
+
+    context = {
+        'title': title,
+        'user_form': edit_form
+    }
+    return render(request, 'user_update.html', context)
 
 
 def user_delete(request, pk):

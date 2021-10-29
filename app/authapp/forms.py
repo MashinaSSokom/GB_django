@@ -46,7 +46,11 @@ class ShopUserEditForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super(ShopUserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if field.__class__ == forms.fields.BooleanField:
+                field.widget.attrs['class'] = 'form-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
             field.help_text = ''
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
