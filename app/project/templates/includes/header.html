@@ -22,13 +22,19 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li>
                         <a href="{% url 'basket:basket' %}"
-                           class="{% if '/basket/' in request.path %} active {% endif %}">
+                           class="{% if '/basket/' in request.path %} active {% endif %} dropdown-item">
                             Корзина </a>
                     </li>
                     <li>
-                        <a href="{% url 'auth:edit' %}"> {{ user.first_name|default:'Пользователь' }}</a></li>
+                        <a class="dropdown-item" href="{% url 'auth:edit' %}"> {{ user.first_name|default:'Пользователь' }}</a>
+                    </li>
+                    {% if user.is_superuser %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'admin_staff:users' %}">Админка</a>
+                        </li>
+                    {% endif %}
                     <li>
-                        <a href="{% url 'auth:logout' %}"> выйти </a>
+                        <a class="dropdown-item" href="{% url 'auth:logout' %}"> выйти </a>
                     </li>
                 </ul>
             {% else %}
