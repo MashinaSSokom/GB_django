@@ -41,7 +41,7 @@
                                     </td>
                                     <td>
                                         <a {% if not category.is_active %} class="invisible" {% endif %}
-                                                                       href="{% url 'admin_staff:category_delete' pk=user.id %}">
+                                                                       href="{% url 'admin_staff:category_delete' pk=category.id %}">
                                             <i class="fa fa-times-circle"></i>
                                         </a>
                                     </td>

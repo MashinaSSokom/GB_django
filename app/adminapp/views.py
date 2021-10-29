@@ -126,12 +126,12 @@ def category_update(request, pk):
 
 def category_delete(request, pk):
     title = 'админка/удалить катеорию'
-    user = get_object_or_404(ShopUser, pk=pk)
+    product_category = get_object_or_404(ProductCategory, pk=pk)
 
-    user.is_active = False
-    user.save()
+    product_category.is_active = False
+    product_category.save()
 
-    return HttpResponseRedirect(reverse('admin_staff:users'))
+    return HttpResponseRedirect(reverse('admin_staff:categories'))
 
 
 def products(request, pk):
