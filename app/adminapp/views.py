@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 
-from adminapp.forms import ShopUserAdminEditForm, ProductCategoryCreateFrom
+from adminapp.forms import ShopUserAdminEditForm, ProductCategoryFrom
 from authapp.forms import ShopUserRegisterForm, ShopUserEditForm
 from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render, reverse
@@ -42,7 +42,7 @@ def user_create(request):
 
 
 def user_update(request, pk):
-    title = 'админка/редактирова пользователя'
+    title = 'админка/редактировать пользователя'
     user = get_object_or_404(ShopUser, pk=pk)
 
     if request.method == "POST":
@@ -63,7 +63,7 @@ def user_update(request, pk):
 
 
 def user_delete(request, pk):
-    title = 'админка/удалть пользователя'
+    title = 'админка/удалить пользователя'
     user = get_object_or_404(ShopUser, pk=pk)
 
     user.is_active = False
@@ -90,12 +90,12 @@ def category_create(request):
     title = 'админка/создать категорию'
 
     if request.method == "POST":
-        category_form = ProductCategoryCreateFrom(data=request.POST)
+        category_form = ProductCategoryFrom(data=request.POST)
         if category_form.is_valid():
             category_form.save()
             return HttpResponseRedirect(reverse('admin_staff:categories'))
 
-    category_form = ProductCategoryCreateFrom()
+    category_form = ProductCategoryFrom()
 
     context = {
         'title': title,
@@ -105,11 +105,33 @@ def category_create(request):
 
 
 def category_update(request, pk):
-    pass
+    title = 'админка/редактировать категорию'
+    product_category = get_object_or_404(ProductCategory, pk=pk)
+
+    if request.method == "POST":
+        edit_form = ProductCategoryFrom(data=request.POST,
+                                        instance=product_category)
+        if edit_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('admin_staff:categories'))
+
+    edit_form = ProductCategoryFrom(instance=product_category)
+
+    context = {
+        'title': title,
+        'user_form': edit_form
+    }
+    return render(request, 'user_update.html', context)
 
 
 def category_delete(request, pk):
-    pass
+    title = 'админка/удалить катеорию'
+    user = get_object_or_404(ShopUser, pk=pk)
+
+    user.is_active = False
+    user.save()
+
+    return HttpResponseRedirect(reverse('admin_staff:users'))
 
 
 def products(request, pk):
