@@ -63,7 +63,13 @@ def user_update(request, pk):
 
 
 def user_delete(request, pk):
-    pass
+    title = 'админка/удалть пользователя'
+    user = get_object_or_404(ShopUser, pk=pk)
+
+    user.is_active = False
+    user.save()
+
+    return HttpResponseRedirect(reverse('admin_staff:users'))
 
 
 def categories(request):
