@@ -1,28 +1,26 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 
 from mainapp.models import Product
 from . import models
 
 
+@login_required
 def basket_view(request):
-    products_in_basket = models.Basket.objects.filter(user=request.user)
-
-    all_quantity = 0
-    full_price = 0
-    for item in products_in_basket:
-        full_price += item.get_full_product_price()
-        all_quantity += item.quantity_in_basket
+    basket = models.Basket.objects.filter(user=request.user)
 
     context = {'title': 'Корзина',
-               'products_in_basket': products_in_basket,
-               'full_price': full_price,
-               'all_quantity': all_quantity}
+               'basket': basket}
 
     return render(request, 'basket.html', context)
 
 
+@login_required
 def basket_add_view(request, pk):
+    if 'login' in request.META.get('HTTP_REFERER'):
+        return HttpResponseRedirect(reverse('products:detail_product', args=[pk]))
+
     product = get_object_or_404(Product, pk=pk)
 
     basket = models.Basket.objects.filter(user=request.user, product=product).first()
@@ -36,13 +34,23 @@ def basket_add_view(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
+def basket_sub_view(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    basket = models.Basket.objects.filter(user=request.user, product=product).first()
+
+    if basket.quantity_in_basket > 1:
+        basket.quantity_in_basket -= 1
+        basket.save()
+    else:
+        basket.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
 def basket_remove_view(request, pk):
-    # basket = models.Basket.objects.filter(product=product).first()
-    #
-    # if not basket:
-    #     models.Basket.objects.create(product=product)
-    #
-    # basket.quantity_in_basket += 1
-    # basket.save()
+    basket = get_object_or_404(models.Basket, pk=pk)
+    basket.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
