@@ -71,7 +71,7 @@ def user_delete(request, pk):
 
     return HttpResponseRedirect(reverse('admin_staff:users'))
 
-
+@user_passes_test(lambda u: u.is_superuser)
 def categories(request):
     title = 'админка/категории'
 
@@ -82,7 +82,7 @@ def categories(request):
         'objects': categories_list
     }
 
-    return render(request, 'adminapp/categories.html', content)
+    return render(request, 'categories.html', content)
 
 
 def category_create(request):
