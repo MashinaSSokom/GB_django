@@ -1,6 +1,7 @@
 from django.urls import path
 
-import views as adminapp
+from . import views as adminapp
+
 
 app_name = 'adminapp'
 
