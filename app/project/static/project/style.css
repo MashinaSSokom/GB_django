@@ -90,11 +90,11 @@ html, body {
 	left: 1210px;
 }
 
-.clearfix:after {
-	content: "";
-	display: block;
-	clear: both;
-}
+/*.clearfix:after {*/
+/*	content: "";*/
+/*	display: block;*/
+/*	clear: both;*/
+/*}*/
 .text-slider {
 	margin-top: 288px;
 	position: absolute;
@@ -551,7 +551,7 @@ html, body {
 	background-color: #f7f7f7;
 	padding-left: 99px;
 	padding-right: 98px;
-	margin: -250px auto 0;
+	margin: -374px auto 0;
 	clear: both;
 }
 .footer form {

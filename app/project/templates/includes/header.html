@@ -1,6 +1,7 @@
-<div class="header clearfix">
+<div class="clearfix header">
     <a href="/" class="logo"></a>
-    <ul class="menu">
+    <div class="clearfix">
+        <ul class="menu">
         <li>
             <a href="{% url 'main' %}" class="{% if request.path == '/' %} active {% endif %}">домой</a>
         </li>
@@ -37,5 +38,7 @@
             </div>
         </li>
     </ul>
+    </div>
+
 
 </div>
