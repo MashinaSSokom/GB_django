@@ -72,6 +72,9 @@
                     <a href="{% url 'adminapp:product_create' request.resolver_match.kwargs.pk %}">
                         <button class="btn btn-success">Создать продукт</button>
                     </a>
+                    <a href="{% url 'adminapp:categories'%}">
+                        <button class="btn btn-outline-secondary">Вернуться к категориям</button>
+                    </a>
                 </div>
             </div>
         </div>

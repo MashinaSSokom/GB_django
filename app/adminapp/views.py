@@ -197,9 +197,9 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 
-
-def product_read(request, pk):
-    pass
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+    template_name = 'adminapp/product_detail.html'
 
 
 def product_update(request, pk):
