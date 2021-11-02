@@ -202,9 +202,17 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     template_name = 'adminapp/product_detail.html'
 
 
-def product_update(request, pk):
-    pass
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    model = Product
+    template_name = 'adminapp/products_delete.html'
 
+    def get_success_url(self):
+        category_id = Product.objects.get(pk=self.kwargs['pk']).category_id
+        return reverse_lazy('admin_staff:products', kwargs={'pk': category_id})
 
-def product_delete(request, pk):
-    pass
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+
+        return HttpResponseRedirect(self.get_success_url())
