@@ -1,4 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 
 from adminapp.forms import ShopUserAdminEditForm, ProductCategoryFrom
 from authapp.forms import ShopUserRegisterForm, ShopUserEditForm
@@ -6,6 +8,10 @@ from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render, reverse
 from mainapp.models import Product, ProductCategory
 from django.contrib.auth.decorators import user_passes_test
+from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
+from django.db.models.query import QuerySet
+
+from .forms import ProductFrom
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -19,7 +25,7 @@ def users(request):
         'objects': users_list
     }
 
-    return render(request, 'user.html', context)
+    return render(request, 'adminapp/user.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -39,7 +45,7 @@ def user_create(request):
         'title': title,
         'user_form': user_form
     }
-    return render(request, 'user_update.html', context)
+    return render(request, 'adminapp/user_update.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -61,7 +67,7 @@ def user_update(request, pk):
         'title': title,
         'user_form': edit_form
     }
-    return render(request, 'user_update.html', context)
+    return render(request, 'adminapp/user_update.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -86,7 +92,7 @@ def categories(request):
         'objects': categories_list
     }
 
-    return render(request, 'categories.html', content)
+    return render(request, 'adminapp/categories.html', content)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -105,7 +111,7 @@ def category_create(request):
         'title': title,
         'category_form': category_form
     }
-    return render(request, 'category_update.html', context)
+    return render(request, 'adminapp/category_update.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -126,7 +132,7 @@ def category_update(request, pk):
         'title': title,
         'user_form': edit_form
     }
-    return render(request, 'user_update.html', context)
+    return render(request, 'adminapp/user_update.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -140,25 +146,46 @@ def category_delete(request, pk):
     return HttpResponseRedirect(reverse('admin_staff:categories'))
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def products(request, pk):
-    title = 'админка/продукт'
-
-    category = get_object_or_404(ProductCategory, pk=pk)
-    products_list = Product.objects.filter(category__pk=pk).order_by('name')
-
-    content = {
-        'title': title,
-        'category': category,
-        'objects': products_list,
-    }
-
-    return render(request, 'adminapp/products.html', content)
-
-
 def product_create(request, pk):
     pass
 
+
+class ProductListView(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = 'adminapp/products.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductListView, self).get_context_data()
+        context['title'] = 'админка/продукты'
+        return context
+
+    def get_queryset(self: Product) -> QuerySet:
+        queryset = super().get_queryset()
+        category = get_object_or_404(ProductCategory, pk=self.kwargs['pk'])
+        return Product.objects.filter(category=category)
+
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    form_class = ProductFrom
+    template_name = 'adminapp/product_update.html'
+
+    def get_success_url(self):
+        return reverse_lazy('admin_staff:products', kwargs={'pk': self.kwargs['pk']})
+
+    def get_initial(self):
+        return {'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])}
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductCreateView, self).get_context_data()
+        context['title'] = 'админка/создать продукт'
+        return context
+
+
+    # def get_queryset(self: Product) -> QuerySet:
+    #     queryset = super().get_queryset()
+    #     category = get_object_or_404(ProductCategory, pk=self.kwargs['pk'])
+    #     return Product.objects.filter(category=category)
 
 def product_read(request, pk):
     pass
