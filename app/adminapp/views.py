@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
 from django.db.models.query import QuerySet
 
-from .forms import ProductFrom
+from .forms import ProductFrom, ProductEditForm
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -182,10 +182,21 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-    # def get_queryset(self: Product) -> QuerySet:
-    #     queryset = super().get_queryset()
-    #     category = get_object_or_404(ProductCategory, pk=self.kwargs['pk'])
-    #     return Product.objects.filter(category=category)
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductEditForm
+    template_name = 'adminapp/product_update.html'
+
+    def get_success_url(self):
+        category_id = Product.objects.get(pk=self.kwargs['pk']).category_id
+        return reverse_lazy('admin_staff:products', kwargs={'pk': category_id})
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductUpdateView, self).get_context_data()
+        context['title'] = 'админка/редактировать продукт'
+        return context
+
+
 
 def product_read(request, pk):
     pass
