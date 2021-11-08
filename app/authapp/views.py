@@ -5,6 +5,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from authapp.models import ShopUser
 
 
 def login(request):
@@ -24,7 +25,6 @@ def login(request):
                 if 'next' in request.POST.keys():
                     return HttpResponseRedirect(request.POST['next'])
                 return HttpResponseRedirect(reverse('main'))
-
 
     context = {
         'title': title,
@@ -99,11 +99,24 @@ def send_verify_mail(user):
 
     title = f'Подтверждение учетной записи {user.username}'
 
-    message = f'Для подтверждения учетной записи {user.username} на портале \
-                {settings.DOMAIN_NAME} перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}'
+    message = f'Для подтверждения учетной записи {user.username} на портале {settings.DOMAIN_NAME} перейдите по ссылке:' \
+              f'\n{settings.DOMAIN_NAME}{verify_link}'
 
     return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
 
 
-def verify(email, activation_key):
-    pass
+def verify(request, email, activation_key):
+    try:
+        user = ShopUser.objects.get(email=email)
+        if user.activation_key == activation_key and user.is_activation_expired():
+            user.is_active = True
+            user.save()
+            auth.login(request=request, user=user)
+            return render(request, template_name='verification.html')
+
+        print(f'UserActivations error {user}')
+        return render(request, template_name='verification.html')
+
+    except Exception as e:
+        print(f'UserVerify error {e.args}')
+        return HttpResponseRedirect(reverse('main'))
