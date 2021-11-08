@@ -13,7 +13,6 @@ def detail_product_view(request, productid):
 
     context = {'title': 'Каталог',
                'detail_product': detail_product,
-               'links_menu': links_menu,
                'category': category,
                'related_products': related_products}
     return render(request, 'detail.html', context=context)
@@ -34,7 +33,6 @@ def category_products_view(request, catid, page=1):
         products_paginator = paginator.page(paginator.num_pages)
 
     context = {'title': 'Каталог',
-               'links_menu': links_menu,
                'category': category,
                'products': products_paginator}
     return render(request, 'products.html', context=context)
@@ -55,7 +53,6 @@ def products_view(request, page=1):
         products_paginator = paginator.page(paginator.num_pages)
 
     context = {'title': 'Каталог',
-               'links_menu': links_menu,
                'products': products_paginator}
 
     return render(request, 'products.html', context=context)
