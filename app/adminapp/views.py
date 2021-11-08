@@ -8,7 +8,7 @@ from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render, reverse
 from mainapp.models import Product, ProductCategory
 from django.contrib.auth.decorators import user_passes_test
-from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
+from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView, View
 from django.db.models.query import QuerySet
 
 from .forms import ProductFrom, ProductEditForm
@@ -144,10 +144,6 @@ def category_delete(request, pk):
     product_category.save()
 
     return HttpResponseRedirect(reverse('admin_staff:categories'))
-
-
-def product_create(request, pk):
-    pass
 
 
 class ProductListView(LoginRequiredMixin, ListView):
