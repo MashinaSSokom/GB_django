@@ -2,9 +2,6 @@
 {% load static %}
 
 {% block content %}
-    {% if messages%}
-        <p></p>
-    {% endif %}
     <form class="form-horizontal" action="{% url 'auth:register' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ register_form.as_p }}

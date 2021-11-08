@@ -9,20 +9,23 @@ from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditF
 
 def login(request):
     title = "Вход"
-    login_form = ShopUserLoginForm(data=request.POST)
 
     next = request.GET['next'] if 'next' in request.GET.keys() else ''
 
-    if request.method == 'POST' and login_form.is_valid():
-        username = request.POST['username']
-        password = request.POST['password']
+    if request.method == 'POST':
+        login_form = ShopUserLoginForm(data=request.POST)
+        if login_form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
 
-        user = auth.authenticate(username=username, password=password)
-        if user and user.is_active:
-            auth.login(request=request, user=user)
-            if 'next' in request.POST.keys():
-                return HttpResponseRedirect(request.POST['next'])
-            return HttpResponseRedirect(reverse('main'))
+            user = auth.authenticate(username=username, password=password)
+            if user and user.is_active:
+                auth.login(request=request, user=user)
+                if 'next' in request.POST.keys():
+                    return HttpResponseRedirect(request.POST['next'])
+                return HttpResponseRedirect(reverse('main'))
+
+    login_form = ShopUserLoginForm()
 
     context = {
         'title': title,
@@ -71,9 +74,9 @@ def register(request):
             user = register_form.save()
 
             if send_verify_mail(user):
-                messages.success(request, messages.SUCCESS, f'Отправили письмо к Вам нам на почту. '
-                                                            f'Перейдите по ссылке из письма для активации вашего '
-                                                            f'аккаунта!')
+                messages.add_message(request, messages.SUCCESS, f'Отправили письмо к Вам нам на почту. '
+                                                                f'Перейдите по ссылке из письма для активации вашего '
+                                                                f'аккаунта!')
                 print('-------- EMAIL SENT --------')
                 return HttpResponseRedirect(reverse('auth:login'))
             else:
@@ -93,8 +96,6 @@ def register(request):
 
 
 def send_verify_mail(user):
-    print(user.email)
-    print(user.activation_key)
     verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
 
     title = f'Подтверждение учетной записи {user.username}'
