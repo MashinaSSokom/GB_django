@@ -1,7 +1,7 @@
 <div class="links container text-center">
     <ul class="links-menu">
         <li>
-            <a href="{% url 'products:products' %}"
+            <a href="{% url 'products:products' 1 %}"
                class="{% if request.path == '/products/' %} active {% endif %}">
                 Все
             </a>
@@ -9,7 +9,7 @@
         {% for link in links_menu %}
             {% if link.is_active %}
                 <li>
-                    <a href="{% url 'products:product' link.id %}"
+                    <a href="{% url 'products:product' link.id 1 %}"
                        class="{% if request.resolver_match.kwargs.catid == link.id %} active {% endif %}">
                         {{ link.name }}
                     </a>

@@ -6,7 +6,7 @@
                 <a href="{% url 'main' %}" class="{% if request.path == '/' %} active {% endif %}">домой</a>
             </li>
             <li>
-                <a href="{% url 'products:products' %}"
+                <a href="{% url 'products:products' 1 %}"
                    class="{% if '/products/' in request.path %} active {% endif %}">каталог</a>
             </li>
             <li>

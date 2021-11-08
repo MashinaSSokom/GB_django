@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load tags %}
 
 {% block content %}
     <div class="hero-white container">
@@ -19,11 +20,40 @@
             {% endif %}
             {#                <a class="explore" href="#">показать все <img src="{% static 'mainapp/img/arrow.png' %}" alt=""></a>#}
         </div>
+        <div class="paginator">
+            {% if products.has_previous %}
+                {% if category %}
+                    <a href="{% url 'product'  category.id products.previous_page_number %}">
+                        <
+                    </a>
+                {% else %}
+                    <a href="{% url 'products:products'  products.previous_page_number %}">
+                        <
+                    </a>
+                {% endif %}
+            {% endif %}
+            <span class="current">
+            страница {{ products.number }} из
+            {{ products.paginator.num_pages }}
+          </span>
+            {% if products.has_next %}
+                {% if category %}
+                    <a href="{% url 'product'  category.id products.next_page_number %}">
+                        >
+                    </a>
+                {% else %}
+                    <a href="{% url 'products:products'  products.next_page_number %}">
+                        >
+                    </a>
+                {% endif %}
+            {% endif %}
+        </div>
+
         <div class="related-products clearfix">
             {% for product in products %}
                 <div class="block">
                     <a href="{% url 'products:detail_product' product.id %}">
-                        <img class="block__img" src="/media/{{ product.image }}" alt="">
+                        <img class="block__img" src="{{ product.image|media_folder_products }}" alt="">
                         <div class="text">
                             <img src="{% static 'mainapp/img/icon-hover.png' %}" alt="img">
                             <h4>{{ product.name }}</h4>
