@@ -1,5 +1,7 @@
+from django.conf import settings
+from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponseRedirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.urls import reverse
 
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
@@ -65,8 +67,19 @@ def register(request):
         register_form = ShopUserRegisterForm(data=request.POST,
                                              files=request.FILES)
         if register_form.is_valid():
-            register_form.save()
-            return HttpResponseRedirect(reverse('auth:login'))
+
+            user = register_form.save()
+
+            if send_verify_mail(user):
+                messages.success(request, messages.SUCCESS, f'Отправили письмо к Вам нам на почту. '
+                                                            f'Перейдите по ссылке из письма для активации вашего '
+                                                            f'аккаунта!')
+                print('-------- EMAIL SENT --------')
+                return HttpResponseRedirect(reverse('auth:login'))
+            else:
+                print('-------- EMAIL SENDING ERROR --------')
+                return HttpResponseRedirect(reverse('auth:login'))
+
     else:
 
         register_form = ShopUserRegisterForm()
@@ -77,3 +90,20 @@ def register(request):
     }
 
     return render(request, 'register.html', context)
+
+
+def send_verify_mail(user):
+    print(user.email)
+    print(user.activation_key)
+    verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
+
+    title = f'Подтверждение учетной записи {user.username}'
+
+    message = f'Для подтверждения учетной записи {user.username} на портале \
+                {settings.DOMAIN_NAME} перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}'
+
+    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
+
+def verify(email, activation_key):
+    pass
