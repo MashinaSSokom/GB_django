@@ -119,7 +119,7 @@ def verify(request, email, activation_key):
         if user.activation_key == activation_key and user.is_activation_expired():
             user.is_active = True
             user.save()
-            auth.login(request=request, user=user)
+            auth.login(request=request, user=user, backend='django.contrib.auth.backends.ModelBackend')
             return render(request, template_name='verification.html')
 
         print(f'UserActivations error {user}')
