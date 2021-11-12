@@ -3,8 +3,9 @@ from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.urls import reverse
+from django.db import transaction
 
-from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileEditForm
 from authapp.models import ShopUser
 
 
@@ -40,6 +41,7 @@ def logout(request):
     return HttpResponseRedirect(reverse('main'))
 
 
+@transaction.atomic
 def edit(request):
     title = "Редактирование"
 
@@ -48,15 +50,21 @@ def edit(request):
         edit_form = ShopUserEditForm(data=request.POST,
                                      files=request.FILES,
                                      instance=request.user)
-        if edit_form.is_valid():
+        edit_profile_form = ShopUserProfileEditForm(data=request.POST,
+                                                    files=request.FILES,
+                                                    instance=request.user.shopuserprofile)
+
+        if edit_form.is_valid() and edit_profile_form.is_valid():
             edit_form.save()
-            return HttpResponseRedirect(reverse('main'))
+            return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = ShopUserEditForm(instance=request.user)
+        edit_profile_form = ShopUserProfileEditForm(instance=request.user.shopuserprofile)
 
     context = {
         'title': title,
         'edit_form': edit_form,
+        'edit_profile_form': edit_profile_form
     }
     return render(request, 'edit.html', context)
 
