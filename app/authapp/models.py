@@ -38,7 +38,7 @@ class ShopUserProfile(models.Model):
         db_index=True,
         on_delete=models.CASCADE
     )
-
+    url = models.URLField(verbose_name='Ссылка', blank=True)
     tagline = models.CharField(verbose_name='тэги', max_length=128, blank=True)
 
     about_me = models.TextField(verbose_name='о себе', max_length=512, blank=True)
