@@ -70,6 +70,9 @@ SOCIAL_AUTH_VK_OAUTH2_API_VERSION = '5.131'
 SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
+SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
+
 LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_PIPELINE = (
@@ -86,7 +89,8 @@ SOCIAL_AUTH_PIPELINE = (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.vk.VKOAuth2'
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.github.GithubOAuth2'
 )
 
 MIDDLEWARE = [
