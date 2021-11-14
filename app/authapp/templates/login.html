@@ -13,4 +13,10 @@
     <button class="btn btn-round form-control">
         <a href="{% url 'auth:register' %}"> Зарегистрироваться</a>
     </button>
+    <button class="btn btn-round form-control">
+        <a href="{% url 'social:begin' 'vk-oauth2' %}"> Вход через ВКонтакте</a>
+    </button>
+    <button class="btn btn-round form-control">
+        <a href="{% url 'social:begin' 'github' %}"> Вход через Github</a>
+    </button>
 {% endblock %}
