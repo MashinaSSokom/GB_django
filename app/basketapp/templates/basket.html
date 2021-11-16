@@ -13,10 +13,12 @@
                         <h3 class="fw-normal mb-0 text-black">Корзина</h3>
                         <div>
                             <p class="mb-0">
-                                <span class="text-muted">Всего товаров:</span> {{ basket.0.get_total_quantity|default:0 }} шт.
+                                <span class="text-muted">Всего товаров:</span> {{ basket.0.get_total_quantity|default:0 }}
+                                шт.
                             </p>
                             <p>
-                                <span class="text-muted">Общая стоимость:</span> {{ basket.0.get_total_price|default:0 }} руб.
+                                <span class="text-muted">Общая стоимость:</span> {{ basket.0.get_total_price|default:0 }}
+                                руб.
                             </p>
                         </div>
                     </div>
@@ -49,7 +51,8 @@
                                         <h5 class="mb-0">{{ item.get_full_product_price }} руб.</h5>
                                     </div>
                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="{% url 'basket:remove' item.id %}" class="text-danger">Удалить<i class="fas fa-trash fa-lg"></i></a>
+                                        <a href="{% url 'basket:remove' item.id %}" class="text-danger">Удалить<i
+                                                class="fas fa-trash fa-lg"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +60,9 @@
                     {% endfor %}
                     <div class="card">
                         <div class="card-body">
-                            <button type="button" class="btn btn-warning btn-block btn-lg">Заказать</button>
+                            <a href="{% url 'orders:order_create' %}" class="btn btn-warning btn-block btn-lg">
+                                Заказать
+                            </a>
                         </div>
                     </div>
                 </div>
