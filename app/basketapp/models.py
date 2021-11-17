@@ -15,7 +15,7 @@ class Basket(models.Model):
         on_delete=models.CASCADE,
         related_name='product'
     )
-    quantity_in_basket = models.PositiveIntegerField(
+    quantity = models.PositiveIntegerField(
         default=0
     )
     is_active = models.BooleanField(
@@ -34,16 +34,16 @@ class Basket(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return f'{self.product} {self.quantity_in_basket} шт.'
+        return f'{self.product} {self.quantity} шт.'
 
     @property
     def get_full_product_price(self):
-        return self.quantity_in_basket*self.product.price
+        return self.quantity*self.product.price
 
     @property
     def get_total_quantity(self):
         _total_products = Basket.objects.filter(user=self.user)
-        _totalquantity = sum(list(map(lambda x: x.quantity_in_basket, _total_products)))
+        _totalquantity = sum(list(map(lambda x: x.quantity, _total_products)))
         return _totalquantity
 
     @property
@@ -51,3 +51,7 @@ class Basket(models.Model):
         _total_products = Basket.objects.filter(user=self.user)
         _total_price = sum(list(map(lambda x: x.get_full_product_price, _total_products)))
         return _total_price
+
+    @staticmethod
+    def get_item(id):
+        return Basket.objects.filter(id=id).first()

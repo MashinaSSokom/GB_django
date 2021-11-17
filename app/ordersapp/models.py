@@ -51,7 +51,7 @@ class Order(models.Model):
     def get_total_cost(self):
         items = self.orderitems.select_related()
 
-        return sum(list(map(lambda x: x.quantity * x.poduct.price, items)))
+        return sum(list(map(lambda x: x.quantity * x.product.price, items)))
 
     def delete(self):
         for item in self.orderitems.select_related():
@@ -80,6 +80,10 @@ class OrderItems(models.Model):
         verbose_name = 'Часть заказа'
         verbose_name_plural = 'Части заказа'
         ordering = ['-id']
+
+    @staticmethod
+    def get_item(id):
+        return OrderItems.objects.filter(id=id).first()
 
     def get_product_cost(self):
         return self.quantity * self.product.price

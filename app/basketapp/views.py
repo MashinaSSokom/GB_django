@@ -28,7 +28,7 @@ def basket_add_view(request, pk):
     if not basket:
         basket = models.Basket.objects.create(user=request.user, product=product)
 
-    basket.quantity_in_basket += 1
+    basket.quantity += 1
     basket.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -40,8 +40,8 @@ def basket_sub_view(request, pk):
 
     basket = models.Basket.objects.filter(user=request.user, product=product).first()
 
-    if basket.quantity_in_basket > 1:
-        basket.quantity_in_basket -= 1
+    if basket.quantity > 1:
+        basket.quantity -= 1
         basket.save()
     else:
         basket.delete()

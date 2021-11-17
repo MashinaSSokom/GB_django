@@ -2,6 +2,9 @@
 
 
 {% block content %}
+     <div class="hero container">
+        {% include 'includes/header.html' %}
+    </div>
     {% include 'ordersapp/includes/order_summary.html' %}
     <div class="order_form">
         <form action="" method="post">
@@ -36,8 +39,8 @@
                     </tr>
                 {% endfor %}
             </table>
-            <button type="submit" value="сохранить" class="btn btn-default btn-round form-control last">
-                сохранить
+            <button type="submit" value="сохранить" class="btn btn-warning btn-block btn-lg form-control last">
+                Сохранить
             </button>
 {#            {% include 'ordersapp/includes/inc_order_actions.html' %}#}
         </form>

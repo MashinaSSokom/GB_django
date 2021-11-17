@@ -1,13 +1,17 @@
 from django.db import transaction
+from django.db.models.signals import pre_save, pre_delete
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.dispatch import receiver
 
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItems
+
+
 # Create your views here.
 
 
@@ -19,15 +23,11 @@ class OrderList(ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super(OrderList, self).get_context_data(**kwargs)
-    #     context['title'] = 'Заказы'
-    #     return context
-
 
 class OrderCreate(CreateView):
     model = Order
     fields = []
+    extra_context = {'title': 'Заказ'}
     template_name = 'ordersapp/order_form.html'
     success_url = reverse_lazy('orders:orders_list')
 
@@ -48,14 +48,15 @@ class OrderCreate(CreateView):
 
             for num, form in enumerate(formset.forms):
                 form.initial['product'] = basket_items[num].product
-                form.initial['quantity'] = basket_items[num].quantity_in_basket
-
+                form.initial['quantity'] = basket_items[num].quantity
+                form.initial['price'] = basket_items[num].product.price
             # basket_items.delete()
         else:
             formset = OrderFormSet()
 
         context['orderitems'] = formset
         context['basket'] = basket_items
+
         return context
 
     def form_valid(self, form):
@@ -70,8 +71,31 @@ class OrderCreate(CreateView):
                 orderitems.save()
 
         # удаляем пустой заказ
+        print(self.object.get_total_cost())
         if self.object.get_total_cost() == 0:
             self.object.delete()
 
+        basket_items = Basket.objects.filter(user=self.request.user)
+        basket_items.delete()
+
         return super(OrderCreate, self).form_valid(form)
+
+
+# @receiver(signal=pre_delete, sender=OrderItems)
+# @receiver(signal=pre_delete, sender=Basket)
+# def product_quantity_update_save(sender, update_fields, instance, **kwargs):
+#     if update_fields is 'quantity' or 'product':
+#         if instance.id:
+#             instance.product.quantity -= instance.quantity - sender.get_item(instance.id).quantity
+#         else:
+#             instance.product.quantity -= instance.quantity
+#
+#         instance.product.save()
+#
+#
+# @receiver(signal=pre_save, sender=OrderItems)
+# @receiver(signal=pre_save, sender=Basket)
+# def product_quantity_update_delete(sender, instance, **kwargs):
+#     instance.product.quantity += instance.quantity
+#     instance.product.save()
 

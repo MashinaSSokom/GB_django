@@ -10,6 +10,7 @@ class OrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
+            print(field_name, field)
             field.widget.attrs['class'] = 'form-control'
 
 
@@ -23,5 +24,5 @@ class OrderItemForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
-            if field_name == 'product':
-                field.widget.attrs['disabled'] = True
+            # if field_name == 'product':
+            #     field.widget.attrs['disabled'] = True
