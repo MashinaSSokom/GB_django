@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="hero container">
+        {% include 'includes/header.html' %}
+    </div>
+
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-10">
+                    <h3 class="fw-normal mb-0 text-black mb-5">Заказы</h3>
+                    <table class="table orders_list">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Создан</th>
+                            <th>Обновлен</th>
+                            <th>Статус</th>
+                            <th>Удалить</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in object_list %}
+                            {% if item.is_active %}
+                                <tr>
+                                    <td class="td1 orders_list">
+                                        <a href="{% url 'orders:order_read' item.pk %}">
+                                            {{ item.pk }}
+                                        </a>
+                                    </td>
+                                    <td>{{ item.created|date:"Y-m-d H:i:s" }}</td>
+                                    <td>{{ item.updated|date:"Y-m-d H:i:s" }}</td>
+                                    <td>{{ item.get_status_display }}</td>
+                                    <td>
+                                        {% if item.status == 'FM' %}
+                                            <a href="{% url 'orders:order_delete' item.pk %}">
+                                                Удалить
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {#            <a href="{% url 'orders:order_create' %}" class="btn btn-secondary">#}
+            {#                Новый заказ#}
+            {#            </a>#}
+        </div>
+    </section>
+{% endblock %}

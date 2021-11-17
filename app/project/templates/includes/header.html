@@ -20,6 +20,11 @@
                     <i class="bi bi-list"></i>
                 </li>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                     <li>
+                        <a href="{% url 'orders:orders_list' %}"
+                           class="{% if '/orders/' in request.path %} active {% endif %} dropdown-item">
+                            Заказы </a>
+                    </li>
                     <li>
                         <a href="{% url 'basket:basket' %}"
                            class="{% if '/basket/' in request.path %} active {% endif %} dropdown-item">
