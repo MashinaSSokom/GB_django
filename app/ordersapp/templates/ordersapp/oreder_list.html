@@ -25,9 +25,7 @@
                             {% if item.is_active %}
                                 <tr>
                                     <td class="td1 orders_list">
-                                        {#{% url 'orders:order_read' item.pk %}#}
-
-                                        <a href="">
+                                        <a href="{% url 'orders:order_read' item.pk %}">
                                             {{ item.pk }}
                                         </a>
                                     </td>

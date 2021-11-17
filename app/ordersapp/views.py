@@ -18,7 +18,7 @@ from ordersapp.models import Order, OrderItems
 class OrderList(ListView):
     model = Order
     template_name = 'ordersapp/oreder_list.html'
-    extra_context = {'title': 'Заказы'}
+    extra_context = {'title': 'Список заказов'}
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
@@ -27,7 +27,7 @@ class OrderList(ListView):
 class OrderCreate(CreateView):
     model = Order
     fields = []
-    extra_context = {'title': 'Заказ'}
+    extra_context = {'title': 'Заказ/создание'}
     template_name = 'ordersapp/order_form.html'
     success_url = reverse_lazy('orders:orders_list')
 
@@ -79,6 +79,12 @@ class OrderCreate(CreateView):
         basket_items.delete()
 
         return super(OrderCreate, self).form_valid(form)
+
+
+class OrderRead(DeleteView):
+    model = Order
+    extra_context = {'title': 'Заказ/просмотр'}
+    template_name = 'ordersapp/order_detail.html'
 
 
 # @receiver(signal=pre_delete, sender=OrderItems)
