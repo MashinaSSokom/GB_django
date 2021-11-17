@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="hero container">
+        {% include 'includes/header.html' %}
+    </div>
+
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-10">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-normal mb-0 text-black">Корзина</h3>
+                        <div>
+                            <p class="mb-0">
+                                <span class="text-muted">Всего товаров:</span> {{ basket.0.get_total_quantity|default:0 }} шт.
+                            </p>
+                            <p>
+                                <span class="text-muted">Общая стоимость:</span> {{ basket.0.get_total_price|default:0 }} руб.
+                            </p>
+                        </div>
+                    </div>
+                    {% for item in basket %}
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="/media/{{ item.product.image }}"
+                                             class="img-fluid rounded-3" alt="">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">{{ item.product.name }}</p>
+                                        <p><span class="text-muted">Цена: </span> {{ item.product.price }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <a href="{% url 'basket:sub' item.product.id %}"
+                                           class="list-group-item list-group-item-action active px-2">-</a>
+
+                                        <input readonly id="form1" min="0" name="quantity"
+                                               value="{{ item.quantity_in_basket }}" type="number"
+                                               class="form-control form-control-sm"/>
+
+                                        <a href="{% url 'basket:add' item.product.id %}"
+                                           class="list-group-item list-group-item-action active px-2">+</a>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">{{ item.get_full_product_price }} руб.</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="{% url 'basket:remove' item.id %}" class="text-danger">Удалить<i class="fas fa-trash fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="card">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-warning btn-block btn-lg">Заказать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

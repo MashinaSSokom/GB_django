@@ -1,0 +1,15 @@
+{
+  "1": {"name": "Стул повышенного качества",
+        "description": "Не оторваться.",
+        "img": "mainapp/img/product-11.jpg"
+  },
+
+  "2": {"name": "Стул очень повышенного качества",
+        "description": "Не оторваться.",
+        "img": "mainapp/img/product-21.jpg"
+  },
+  "3": {"name": "Стул мега повышенного качества",
+        "description": "Не оторваться.",
+        "img": "mainapp/img/product-31.jpg"
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "category": "Модерн",
+    "name": "Стул \"Сфера\"",
+    "image": "products_images/product-4.jpg",
+    "description": "Стул в стиле модерн",
+    "short_description": "Стул в стиле модерн",
+    "price": "9999.00",
+    "quantity": 15
+  },
+  {
+    "category": "Модерн",
+    "name": "Стул \"Гора\"",
+    "image": "products_images/slider1.jpg",
+    "description": "Стул в стиле модерн",
+    "short_description": "Стул в стиле модерн",
+    "price": "7999.00",
+    "quantity": 6
+  },
+  {
+    "category": "Модерн",
+    "name": "Стул \"Литой\"",
+    "image": "products_images/product-21.jpg",
+    "description": "Стул в стиле модерн",
+    "short_description": "Стул в стиле модерн",
+    "price": "999.00",
+    "quantity": 45
+  },
+  {
+    "category": "Дом",
+    "name": "Лампа \"Маяк\"",
+    "image": "products_images/product-41.jpg",
+    "description": "Удобная Лампа",
+    "short_description": "Удобная лампа Удобная лампа Удобная лампа",
+    "price": "1999.00",
+    "quantity": 15
+  }
+]

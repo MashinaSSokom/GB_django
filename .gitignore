@@ -1,4 +1,9 @@
 venv
+env
 .idea
 base_site
 *.pyc
+*.sqlite
+*.sqlite3
+*.env
+

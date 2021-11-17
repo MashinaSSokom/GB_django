@@ -1,0 +1,22 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-horizontal" action="{% url 'auth:login' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+        {{ login_form.as_p }}
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+    <button class="btn btn-round form-control">
+        <a href="{% url 'auth:register' %}"> Зарегистрироваться</a>
+    </button>
+    <button class="btn btn-round form-control">
+        <a href="{% url 'social:begin' 'vk-oauth2' %}"> Вход через ВКонтакте</a>
+    </button>
+    <button class="btn btn-round form-control">
+        <a href="{% url 'social:begin' 'github' %}"> Вход через Github</a>
+    </button>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'adminapp/adminapp_base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Категории</h1>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Категории
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Детали</th>
+                                <th>Активный</th>
+                                <th>Удалить</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Детали</th>
+                                <th>Активный</th>
+                                <th>Удалить</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for product in object_list %}
+                                <tr {% if not product.is_active %} style="opacity: 0.5;" {% endif %}>
+                                    <td>
+                                        <a href="{% url 'admin_staff:product_update' product.id %}"
+                                           style="color: dodgerblue">
+
+                                            {{ product.name }}
+
+                                        </a>
+                                    </td>
+                                    <td class="">
+                                        <a href="{% url 'admin_staff:product_read' product.id %}"
+                                           style="color: dodgerblue">
+
+                                            Открыть
+
+                                        </a>
+                                    </td>
+                                    <td class="">
+                                        {% if user.is_active %}
+                                            <i class="fa fa-check-circle"></i>
+                                        {% else %}
+                                            <i class="fa fa-times-circle"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+
+                                        <a {% if not product.is_active or not product.category.is_active %} class="invisible" {% endif %}
+                                                                           href="{% url 'admin_staff:product_delete' pk=product.id %}">
+                                            <i class="fa fa-times-circle"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'adminapp:product_create' request.resolver_match.kwargs.pk %}">
+                        <button class="btn btn-success">Создать продукт</button>
+                    </a>
+                    <a href="{% url 'adminapp:categories'%}">
+                        <button class="btn btn-outline-secondary">Вернуться к категориям</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
