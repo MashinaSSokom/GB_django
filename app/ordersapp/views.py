@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.urls import reverse_lazy
 from django.dispatch import receiver
 
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
@@ -135,11 +135,17 @@ class OrderUpdate(UpdateView):
         return super(OrderUpdate, self).form_valid(form)
 
 
-class OrderRead(DeleteView):
+class OrderRead(DetailView):
     model = Order
     extra_context = {'title': 'Заказ/просмотр'}
     template_name = 'ordersapp/order_detail.html'
 
+
+class OrderDelete(DeleteView):
+    model = Order
+    extra_context = {'title': 'Заказ/удаление'}
+    template_name = 'ordersapp/order_delete.html'
+    success_url = reverse_lazy('orders:orders_list')
 
 def order_forming_complete(request, pk):
     order = get_object_or_404(Order, pk=pk)
