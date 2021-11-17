@@ -147,6 +147,7 @@ class OrderDelete(DeleteView):
     template_name = 'ordersapp/order_delete.html'
     success_url = reverse_lazy('orders:orders_list')
 
+
 def order_forming_complete(request, pk):
     order = get_object_or_404(Order, pk=pk)
     order.status = Order.SENT_TO_PROCEED
@@ -154,20 +155,20 @@ def order_forming_complete(request, pk):
 
     return HttpResponseRedirect(reverse('ordersapp:orders_list'))
 
-# @receiver(signal=pre_delete, sender=OrderItems)
-# @receiver(signal=pre_delete, sender=Basket)
-# def product_quantity_update_save(sender, update_fields, instance, **kwargs):
-#     if update_fields is 'quantity' or 'product':
-#         if instance.id:
-#             instance.product.quantity -= instance.quantity - sender.get_item(instance.id).quantity
-#         else:
-#             instance.product.quantity -= instance.quantity
-#
-#         instance.product.save()
-#
-#
-# @receiver(signal=pre_save, sender=OrderItems)
-# @receiver(signal=pre_save, sender=Basket)
-# def product_quantity_update_delete(sender, instance, **kwargs):
-#     instance.product.quantity += instance.quantity
-#     instance.product.save()
+
+@receiver(pre_save, sender=OrderItems)
+@receiver(pre_save, sender=Basket)
+def product_quantity_update_save(sender, update_fields, instance, **kwargs):
+    if update_fields is 'quantity' or 'product':
+        if instance.pk:
+            instance.product.quantity -= instance.quantity - sender.get_item(instance.pk).quantity
+        else:
+            instance.product.quantity -= instance.quantity
+        instance.product.save()
+
+
+@receiver(pre_delete, sender=OrderItems)
+@receiver(pre_delete, sender=Basket)
+def product_quantity_update_delete(sender, instance, **kwargs):
+    instance.product.quantity += instance.quantity
+    instance.product.save()
