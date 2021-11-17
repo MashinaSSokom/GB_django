@@ -1,7 +1,8 @@
 from django.db import transaction
 from django.db.models.signals import pre_save, pre_delete
 from django.forms import inlineformset_factory
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, reverse
 from django.urls import reverse_lazy
 from django.dispatch import receiver
 
@@ -87,6 +88,13 @@ class OrderRead(DeleteView):
     template_name = 'ordersapp/order_detail.html'
 
 
+def order_forming_complete(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    order.status = Order.SENT_TO_PROCEED
+    order.save()
+
+    return HttpResponseRedirect(reverse('ordersapp:orders_list'))
+
 # @receiver(signal=pre_delete, sender=OrderItems)
 # @receiver(signal=pre_delete, sender=Basket)
 # def product_quantity_update_save(sender, update_fields, instance, **kwargs):
@@ -104,4 +112,3 @@ class OrderRead(DeleteView):
 # def product_quantity_update_delete(sender, instance, **kwargs):
 #     instance.product.quantity += instance.quantity
 #     instance.product.save()
-

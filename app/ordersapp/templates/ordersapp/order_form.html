@@ -2,7 +2,7 @@
 
 
 {% block content %}
-     <div class="hero container">
+    <div class="hero container">
         {% include 'includes/header.html' %}
     </div>
     {% include 'ordersapp/includes/order_summary.html' %}
@@ -42,7 +42,9 @@
             <button type="submit" value="сохранить" class="btn btn-warning btn-block btn-lg form-control last">
                 Сохранить
             </button>
-{#            {% include 'ordersapp/includes/inc_order_actions.html' %}#}
+            {#            {% include 'ordersapp/includes/inc_order_actions.html' %}#}
         </form>
     </div>
+
+    {% include 'ordersapp/includes/order_actions.html' %}
 {% endblock %}
