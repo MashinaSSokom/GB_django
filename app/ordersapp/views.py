@@ -82,6 +82,59 @@ class OrderCreate(CreateView):
         return super(OrderCreate, self).form_valid(form)
 
 
+class OrderUpdate(UpdateView):
+    model = Order
+    fields = []
+    extra_context = {'title': 'Заказ/редактирование'}
+    template_name = 'ordersapp/order_form.html'
+    success_url = reverse_lazy('orders:orders_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderUpdate, self).get_context_data(**kwargs)
+        OrderFormSet = inlineformset_factory(Order, OrderItems, form=OrderItemForm, extra=0)
+
+        if self.request.POST:
+            formset = OrderFormSet(self.request.POST, instance=self.object)
+            context['orderitems'] = formset
+            return context
+
+        # basket_items = Basket.objects.filter(user=self.request.user)
+        #
+        # if len(basket_items):
+        #     OrderFormSet = inlineformset_factory(Order, OrderItems, form=OrderItemForm, extra=len(basket_items))
+        #     formset = OrderFormSet()
+        #
+        #     for num, form in enumerate(formset.forms):
+        #         form.initial['product'] = basket_items[num].product
+        #         form.initial['quantity'] = basket_items[num].quantity
+        #         form.initial['price'] = basket_items[num].product.price
+        #     # basket_items.delete()
+        # else:
+        #     formset = OrderFormSet()
+
+        formset = OrderFormSet(instance=self.object)
+        context['orderitems'] = formset
+
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        orderitems = context['orderitems']
+
+        with transaction.atomic():
+            form.instance.user = self.request.user
+            self.object = form.save()
+            if orderitems.is_valid():
+                orderitems.instance = self.object
+                orderitems.save()
+
+        # удаляем пустой заказ
+        if self.object.get_total_cost() == 0:
+            self.object.delete()
+
+        return super(OrderUpdate, self).form_valid(form)
+
+
 class OrderRead(DeleteView):
     model = Order
     extra_context = {'title': 'Заказ/просмотр'}
