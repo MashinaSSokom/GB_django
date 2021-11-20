@@ -95,26 +95,12 @@ class OrderUpdate(UpdateView):
 
         if self.request.POST:
             formset = OrderFormSet(self.request.POST, instance=self.object)
-            context['orderitems'] = formset
-            return context
+        else:
+            formset = OrderFormSet(instance=self.object)
+            for form in formset.forms:
+                form.initial['price'] = form.instance.product.price
 
-        # basket_items = Basket.objects.filter(user=self.request.user)
-        #
-        # if len(basket_items):
-        #     OrderFormSet = inlineformset_factory(Order, OrderItems, form=OrderItemForm, extra=len(basket_items))
-        #     formset = OrderFormSet()
-        #
-        #     for num, form in enumerate(formset.forms):
-        #         form.initial['product'] = basket_items[num].product
-        #         form.initial['quantity'] = basket_items[num].quantity
-        #         form.initial['price'] = basket_items[num].product.price
-        #     # basket_items.delete()
-        # else:
-        #     formset = OrderFormSet()
-
-        formset = OrderFormSet(instance=self.object)
         context['orderitems'] = formset
-
         return context
 
     def form_valid(self, form):
