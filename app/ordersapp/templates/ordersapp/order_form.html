@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block js %}
+    <script src="{% static 'ordersapp/js/jquerry.formset.js' %}"></script>
+    <script src="{% static 'ordersapp/js/orders_script.js' %}"></script>
+
+{% endblock %}
 
 {% block content %}
     <div class="hero container">
