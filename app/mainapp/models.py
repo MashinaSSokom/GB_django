@@ -76,5 +76,9 @@ class Product(models.Model):
         verbose_name_plural = 'Продукты'
         ordering = ['id']
 
+    @staticmethod
+    def get_items():
+        return Product.objects.filter(quantity__gt=0, is_active=True).order_by('category', 'name')
+
     def __str__(self):
         return f'{self.name} ({self.category})'
