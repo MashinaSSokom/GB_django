@@ -137,7 +137,7 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default': {
-        'NAME': 'project',
+        'NAME': 'app',
         'ENGINE': 'django.db.backends.postgresql',
         'USER': 'postgres',
     }
