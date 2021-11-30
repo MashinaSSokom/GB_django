@@ -17,7 +17,11 @@ def index(l):
 
 
 def products(l):
-    l.client.get("/products/")
+    l.client.get("/products/page/1/")
+
+
+def products1(l):
+    l.client.get("/products/category/2/page/1/")
 
 
 @task
