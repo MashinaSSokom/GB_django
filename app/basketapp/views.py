@@ -9,7 +9,6 @@ from . import models
 @login_required
 def basket_view(request):
     basket = models.Basket.objects.filter(user=request.user)
-
     context = {'title': 'Корзина',
                'basket': basket}
 
